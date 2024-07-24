@@ -47,13 +47,13 @@ class ShatranjBot:
              self.isready()
          elif command == "ucinewgame":
              self.ucinewgame()
-         elif command.startswith("position")
+         elif command.startswith("position"):
              self.position(command)
          elif command.startswith("go"):
              self.go()
          elif command == "stop":
              self.stop()
-         elif command == "quit"
+         elif command == "quit":
              self.quit()
 
 if __name__ == "__main__":
