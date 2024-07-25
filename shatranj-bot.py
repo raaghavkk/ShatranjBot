@@ -23,6 +23,24 @@ class Shatranjbot:
         # Multiply value by 1 if piece is white, -1 if piece is black (this is stupid but it works like my own signed integer)
         return values[piece.piece_type] * (1 if piece.color == chess.WHITE else -1)
 
+    def evaluate_king_safety(self):
+        # Simplified example of king safety evaluation
+        white_king_safety = 0
+        black_king_safety = 0
+
+        # Get positions of the kings
+        white_king_square = self.board.king(chess.WHITE)
+        black_king_square = self.board.king(chess.BLACK)
+
+        # Add simple king safety evaluation (could be more complex (can't think rn)
+        # Here, we penalize for being in the center or exposed (for demonstration)
+        if white_king_square in chess.SQUARES_CENTER:
+            white_king_safety -= 1
+        if black_king_square in chess.SQUARES_CENTER:
+            black_king_safety -= 1
+
+        return white_king_safety - black_king_safety
+
     def minimax(self, depth, maximizing):
         # Minimax algorithm to evaluate board positions to a certain depth (inspiration taken from stackoverflow)
         if depth == 0 or self.board.is_game_over():
