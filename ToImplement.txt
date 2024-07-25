@@ -1,0 +1,2 @@
+Make king less stupid
+check for first three moves
