@@ -1,3 +1,40 @@
-Hi, Welcome to Raaghav and Lakindu's Chess Bot
-We have used the chess library for python and used the minimax algorithm with alpha and beta pruning to find the best move to a max depth of 2
-We continue to work on the project and hope to implement it with a GUI (Planned to be Arena GUI for now)
+
+# ShatranjBot
+
+A UCI chess bot created using python's chess library for the InnovateX Hackathon. We have taken inspiration from game theory videos and implemented the play algorithm using a mini-max algorithm with alpha and beta pruning to a max depth of 2 since it is a DFS algorithm. There is also an exe build available to be tested against real players using arena UI. We plan to update the bot so that it performs better against players and can also execute well known gambits.
+
+
+
+
+![Logo](https://i.ibb.co/bXF6468/SHATRANJ-BOT.png)
+
+
+## Authors
+
+- [@raaghavkk](https://github.com/raaghavkk/) 
+- [@saparamadu](https://github.com/Saparamadu)
+
+
+## Acknowledgements
+
+ - [Sebastian Lague on Youtube](https://www.youtube.com/watch?v=U4ogK0MIzqk)
+ - [Python Chess README](https://python-chess.readthedocs.io/en/latest/)
+ - [Playlist by Eddie Sharick](https://www.youtube.com/playlist?list=PLBwF487qi8MGU81nDGaeNE1EnNEPYWKY_)
+
+
+## Documentation
+
+Summary of UCI Commands
+
+    uci: Initialize the engine.
+    isready: Check if the engine is ready.
+    ucinewgame: Start a new game.
+    position startpos [moves ...]: Set the position and make moves.
+    go: Calculate the best move.
+    quit: Exit the engine
+
+You can also use the engine using the provided exe in the repository under the dist folder and link it to arena UI
+## Optimizations
+
+Need to make a lot of Optimizations :0
+
