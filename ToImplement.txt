@@ -1,2 +1,2 @@
-Make king less stupid
-check for first three moves
+Make king less stupid []
+check for first three moves []
