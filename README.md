@@ -6,13 +6,13 @@ A UCI chess bot created using python's chess library for the InnovateX Hackathon
 
 
 
-![Logo](https://i.ibb.co/bXF6468/SHATRANJ-BOT.png)
+![Logo](https://i.ibb.co/YyZjJ9J/SHATRANJ-BOT-1.png)
 
 
 ## Authors
 
 - [@raaghavkk](https://github.com/raaghavkk/) 
-- [@saparamadu](https://github.com/Saparamadu)
+- [@LakinduGimantha](https://github.com/LakinduGimantha)
 
 
 ## Acknowledgements
