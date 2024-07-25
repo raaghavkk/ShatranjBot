@@ -24,7 +24,7 @@ class Shatranjbot:
         return values[piece.piece_type] * (1 if piece.color == chess.WHITE else -1)
 
     def evaluate_king_safety(self):
-        # Simplified example of king safety evaluation
+        # Initialize safety scores
         white_king_safety = 0
         black_king_safety = 0
 
@@ -32,14 +32,70 @@ class Shatranjbot:
         white_king_square = self.board.king(chess.WHITE)
         black_king_square = self.board.king(chess.BLACK)
 
-        # Add simple king safety evaluation (could be more complex (can't think rn)
-        # Here, we penalize for being in the center or exposed (for demonstration)
+        # Factor 1: Penalize for being in the center
+        center_penalty = -2
         if white_king_square in chess.SQUARES_CENTER:
-            white_king_safety -= 1
+            white_king_safety += center_penalty
         if black_king_square in chess.SQUARES_CENTER:
-            black_king_safety -= 1
+            black_king_safety += center_penalty
+
+        # Factor 2: Evaluate pawn shield
+        white_king_safety += self.evaluate_pawn_shield(white_king_square, chess.WHITE)
+        black_king_safety += self.evaluate_pawn_shield(black_king_square, chess.BLACK)
+
+        # Factor 3: Evaluate king mobility
+        white_king_safety += self.evaluate_king_mobility(white_king_square, chess.WHITE)
+        black_king_safety += self.evaluate_king_mobility(black_king_square, chess.BLACK)
+
+        # Factor 4: Evaluate enemy threats
+        white_king_safety += self.evaluate_enemy_threats(white_king_square, chess.BLACK)
+        black_king_safety += self.evaluate_enemy_threats(black_king_square, chess.WHITE)
 
         return white_king_safety - black_king_safety
+
+    def evaluate_pawn_shield(self, king_square, color):
+        """Evaluate the pawn shield protecting the king."""
+        shield_bonus = 1
+        pawn_shield_squares = []
+
+        if color == chess.WHITE:
+            if king_square in chess.SQUARES_1 | chess.SQUARES_2 | chess.SQUARES_3:
+                pawn_shield_squares = [king_square + chess.SQUARES_A1, king_square + chess.SQUARES_B1,
+                                       king_square + chess.SQUARES_C1]
+        else:
+            if king_square in chess.SQUARES_8 | chess.SQUARES_7 | chess.SQUARES_6:
+                pawn_shield_squares = [king_square - chess.SQUARES_A8, king_square - chess.SQUARES_B8,
+                                       king_square - chess.SQUARES_C8]
+
+        shield_score = 0
+        for square in pawn_shield_squares:
+            if square in self.board.pieces(chess.PAWN, color):
+                shield_score += shield_bonus
+
+        return shield_score
+
+    def evaluate_king_mobility(self, king_square, color):
+        """Evaluate the mobility of the king."""
+        mobility_bonus = 0.1
+        mobility_score = 0
+
+        for move in self.board.legal_moves:
+            if move.from_square == king_square:
+                mobility_score += mobility_bonus
+
+        return mobility_score
+
+    def evaluate_enemy_threats(self, king_square, enemy_color):
+        """Evaluate the proximity and number of enemy pieces near the king."""
+        threat_penalty = -0.5
+        threat_score = 0
+
+        for piece in self.board.piece_map().values():
+            if piece.color == enemy_color:
+                if self.board.is_attacked_by(enemy_color, king_square):
+                    threat_score += threat_penalty
+
+        return threat_score
 
     def minimax(self, depth, maximizing):
         # Minimax algorithm to evaluate board positions to a certain depth (inspiration taken from stackoverflow)
