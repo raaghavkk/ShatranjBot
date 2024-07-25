@@ -33,6 +33,7 @@ class Shatranjbot:
         black_king_square = self.board.king(chess.BLACK)
 
         # Factor 1: Penalize for being in the center
+        #This is a test
         center_penalty = -2
         if white_king_square in chess.SQUARES_CENTER:
             white_king_safety += center_penalty
