@@ -23,7 +23,7 @@ class Shatranjbot:
         # Multiply value by 1 if piece is white, -1 if piece is black (this is stupid but it works like my own signed integer)
         return values[piece.piece_type] * (1 if piece.color == chess.WHITE else -1)
 
-    def evaluate_king_safety(self):
+    """def evaluate_king_safety(self):
         # Initialize safety scores
         white_king_safety = 0
         black_king_safety = 0
@@ -96,7 +96,7 @@ class Shatranjbot:
                 if self.board.is_attacked_by(enemy_color, king_square):
                     threat_score += threat_penalty
 
-        return threat_score
+        return threat_score"""
 
     def minimax(self, depth, maximizing):
         # Minimax algorithm to evaluate board positions to a certain depth (inspiration taken from stackoverflow)
