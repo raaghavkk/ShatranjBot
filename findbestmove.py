@@ -37,23 +37,27 @@ class FindBestMove:
         for player_move in valid_moves:
             self.board.push(player_move)
             opponent_moves = list(self.board.legal_moves)
-            opponent_max_score = -CHECKMATE
-            for opponent_move in opponent_moves:
-                self.board.push(opponent_move)
-                if self.board.is_checkmate():
-                    score = -turn_multiplier * CHECKMATE
-                elif self.board.is_stalemate():
-                    score = STALEMATE
-                else:
-                    score = -turn_multiplier * self.evaluate_board()
-                if score > opponent_max_score:
-                    opponent_max_score = score
-                self.board.pop()
-            self.board.pop(player_move)
-            if opponent_max_score < opponent_minimax_score:
-                opponent_minimax_score = opponent_max_score
-                best_player_move = player_move
-
+            if self.board.is_checkmate():
+                score = -turn_multiplier * CHECKMATE
+            elif self.board.is_stalemate():
+                score = STALEMATE
+            else:
+                opponent_max_score = -CHECKMATE
+                for opponent_move in opponent_moves:
+                    self.board.push(opponent_move)
+                    if self.board.is_checkmate():
+                        score = CHECKMATE
+                    elif self.board.is_stalemate():
+                        score = STALEMATE
+                    else:
+                        score = -turn_multiplier * self.evaluate_board()
+                    if score > opponent_max_score:
+                        opponent_max_score = score
+                    self.board.pop()
+                if opponent_max_score < opponent_minimax_score:
+                    opponent_minimax_score = opponent_max_score
+                    best_player_move = player_move
+            self.board.pop()
         return best_player_move
 
     def uci(self):
