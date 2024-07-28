@@ -12,7 +12,7 @@ piece_score = {
     chess.QUEEN: 9,
     chess.KING: 0
 }
-DEPTH = 3
+DEPTH = 4
 
 class FindBestMove:
     def __init__(self):
@@ -63,7 +63,7 @@ class FindBestMove:
     def findbestmoveminmax(self):
         global nextmove
         nextmove = None
-        self.NegaMax(DEPTH)
+        self.alphabetaNegaMax(DEPTH, -CHECKMATE, CHECKMATE)
         return nextmove
 
     def MinMax(self, depth):
@@ -97,7 +97,7 @@ class FindBestMove:
                 self.board.pop()
             return minScore
 
-    def NegaMax(self , depth):
+    def NegaMax(self, depth):
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
         valid_moves = list(self.board.legal_moves)
         random.shuffle(valid_moves)
@@ -114,6 +114,29 @@ class FindBestMove:
                 if depth == DEPTH:
                     nextmove = move
             self.board.pop()
+        return maxScore
+
+    def alphabetaNegaMax(self, depth , alpha , beta):
+        turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
+        valid_moves = list(self.board.legal_moves)
+        random.shuffle(valid_moves)
+        global nextmove
+        if depth == 0:
+            return turn_multiplier * self.scoreBoard()
+# move ordering around here.
+        maxScore = -CHECKMATE
+        for move in valid_moves:
+            self.board.push(move)
+            score = -self.alphabetaNegaMax(depth - 1, -beta, -alpha)
+            if score > maxScore:
+                maxScore = score
+                if depth == DEPTH:
+                    nextmove = move
+            self.board.pop()
+            if maxScore > alpha:
+                alpha = maxScore
+            if alpha >= beta:
+                break
         return maxScore
 
     def scoreBoard(self):
