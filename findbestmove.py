@@ -5,11 +5,11 @@ import random
 CHECKMATE = 1000
 STALEMATE = 0
 piece_score = {
-    chess.PAWN: 100,
-    chess.KNIGHT: 300,
-    chess.BISHOP: 300,
-    chess.ROOK: 500,
-    chess.QUEEN: 900,
+    chess.PAWN: 10,
+    chess.KNIGHT: 30,
+    chess.BISHOP: 30,
+    chess.ROOK: 50,
+    chess.QUEEN: 90,
     chess.KING: 0
 }
 DEPTH = 5
@@ -87,104 +87,12 @@ class FindBestMove:
         self.board = chess.Board()
         self.nextmove = None
 
-    def evaluate_board(self):
-        score = 0
-        for square in chess.SQUARES:
-            piece = self.board.piece_at(square)
-            if piece:
-                piece_value = piece_score.get(piece.piece_type, 0)
-                score += piece_value if piece.color == chess.WHITE else -piece_value
-        return score
-
-    def find_best_move(self):
-        valid_moves = list(self.board.legal_moves)
-        turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
-        opponent_minimax_score = CHECKMATE
-        best_player_move = None
-        random.shuffle(valid_moves)
-
-        for player_move in valid_moves:
-            self.board.push(player_move)
-            opponent_moves = list(self.board.legal_moves)
-            if self.board.is_checkmate():
-                score = -turn_multiplier * CHECKMATE
-            elif self.board.is_stalemate():
-                score = STALEMATE
-            else:
-                opponent_max_score = -CHECKMATE
-                for opponent_move in opponent_moves:
-                    self.board.push(opponent_move)
-                    if self.board.is_checkmate():
-                        score = CHECKMATE
-                    elif self.board.is_stalemate():
-                        score = STALEMATE
-                    else:
-                        score = -turn_multiplier * self.evaluate_board()
-                    if score > opponent_max_score:
-                        opponent_max_score = score
-                    self.board.pop()
-                if opponent_max_score < opponent_minimax_score:
-                    opponent_minimax_score = opponent_max_score
-                    best_player_move = player_move
-            self.board.pop()
-        return best_player_move
-
-    def findbestmoveminmax(self):
+    def findbestmove(self):
         self.nextmove = None
         valid_moves = list(self.board.legal_moves)
         random.shuffle(valid_moves)
         self.alphabetaNegaMax(valid_moves, DEPTH, -CHECKMATE, CHECKMATE)
         return self.nextmove
-
-    def MinMax(self, depth):
-        turn = self.board.turn == chess.WHITE
-        valid_moves = list(self.board.legal_moves)
-        self.nextmove
-        if depth == 0:
-            return self.evaluate_board()
-
-        if turn:
-            maxScore = -CHECKMATE
-            for move in valid_moves:
-                self.board.push(move)
-                score = self.MinMax(depth - 1)
-                if score > maxScore:
-                    maxScore = score
-                    if depth == DEPTH:
-                        self.nextmove = move
-                self.board.pop()
-            return maxScore
-
-        else:
-            minScore = CHECKMATE
-            for move in valid_moves:
-                self.board.push(move)
-                score = self.MinMax(depth - 1)
-                if score < minScore:
-                    minScore = score
-                    if depth == DEPTH:
-                        self.nextmove = move
-                self.board.pop()
-            return minScore
-
-    def NegaMax(self, depth):
-        turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
-        valid_moves = list(self.board.legal_moves)
-        random.shuffle(valid_moves)
-        self.nextmove
-        if depth == 0:
-            return turn_multiplier * self.evaluate_board()
-
-        maxScore = -CHECKMATE
-        for move in valid_moves:
-            self.board.push(move)
-            score = -self.MinMax(depth - 1)
-            if score > maxScore:
-                maxScore = score
-                if depth == DEPTH:
-                    self.nextmove = move
-            self.board.pop()
-        return maxScore
 
     def alphabetaNegaMax(self, validmoves, depth, alpha, beta):
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
@@ -253,7 +161,7 @@ class FindBestMove:
             self.board.push(chess.Move.from_uci(move))
 
     def go(self):
-        best_move = self.findbestmoveminmax()
+        best_move = self.findbestmove()
         if best_move:
             print(f"bestmove {best_move}")
 
