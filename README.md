@@ -78,7 +78,7 @@ ShatranjBot, uses advanced algorithms and techniques to find the optimal moves i
 ## Authors
 
 - [@raaghavkk](https://github.com/raaghavkk/) 
-- [@saparamadu](https://github.com/Saparamadu)
+- [@LakinduGimantha](https://github.com/LakinduGimantha)
 
 
 ## Acknowledgements
