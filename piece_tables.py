@@ -64,7 +64,7 @@ king_table = [
 ]
 piece_position_score = {chess.PAWN: pawn_table,
                         chess.KNIGHT: knight_table,
-                        chess.BISHOP:bishop_table,
+                        chess.BISHOP: bishop_table,
                         chess.ROOK: rook_table,
                         chess.QUEEN: queen_table,
                         chess.KING: king_table
