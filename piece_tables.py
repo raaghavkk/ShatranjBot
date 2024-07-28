@@ -1,4 +1,5 @@
 # piece_tables.py
+import chess
 
 pawn_table = [
       0,   0,   0,   0,   0,   0,   0,   0,
