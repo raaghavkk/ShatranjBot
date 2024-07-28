@@ -138,7 +138,8 @@ class FindBestMove:
             print(f"bestmove {best_move}")
 
     def stop(self):
-        pass
+        self.save_transposition_table()
+        sys.exit()
 
     def quit(self):
         self.save_transposition_table()
