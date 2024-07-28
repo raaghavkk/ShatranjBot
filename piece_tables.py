@@ -21,7 +21,6 @@ knight_table = [
     -40, -20,   0,   5,   5,   0, -20, -40,
     -50, -40, -30, -30, -30, -30, -40, -50
 ]
-
 bishop_table = [
     -20, -10, -10, -10, -10, -10, -10, -20,
     -10,   0,   0,   0,   0,   0,   0, -10,
@@ -32,7 +31,6 @@ bishop_table = [
     -10,   5,   0,   0,   0,   0,   5, -10,
     -20, -10, -10, -10, -10, -10, -10, -20
 ]
-
 rook_table = [
      0,   0,   0,   0,   0,   0,   0,   0,
      5,  10,  10,  10,  10,  10,  10,   5,
@@ -43,7 +41,6 @@ rook_table = [
     -5,   0,   0,   0,   0,   0,   0,  -5,
      0,   0,   0,   5,   5,   0,   0,   0
 ]
-
 queen_table = [
     -20, -10, -10,  -5,  -5, -10, -10, -20,
     -10,   0,   0,   0,   0,   0,   0, -10,
@@ -54,7 +51,6 @@ queen_table = [
     -10,   0,   5,   0,   0,   0,   0, -10,
     -20, -10, -10,  -5,  -5, -10, -10, -20
 ]
-
 king_table = [
     -30, -40, -40, -50, -50, -40, -40, -30,
     -30, -40, -40, -50, -50, -40, -40, -30,
@@ -65,12 +61,10 @@ king_table = [
      20,  20,   0,   0,   0,   0,  20,  20,
      20,  30,  10,   0,   0,  10,  30,  20
 ]
-
-piece_position_score = {
-    'PAWN': pawn_table,
-    'KNIGHT': knight_table,
-    'BISHOP': bishop_table,
-    'ROOK': rook_table,
-    'QUEEN': queen_table,
-    'KING': king_table
-}
+piece_position_score = {chess.PAWN: pawn_table,
+                        chess.KNIGHT: knight_table,
+                        chess.BISHOP:bishop_table,
+                        chess.ROOK: rook_table,
+                        chess.QUEEN: queen_table,
+                        chess.KING: king_table
+                        }
