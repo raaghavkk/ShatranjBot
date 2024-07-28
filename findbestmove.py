@@ -12,7 +12,7 @@ piece_score = {
     chess.QUEEN: 9,
     chess.KING: 0
 }
-DEPTH = 2
+DEPTH = 3
 
 class FindBestMove:
     def __init__(self):
@@ -63,7 +63,7 @@ class FindBestMove:
     def findbestmoveminmax(self):
         global nextmove
         nextmove = None
-        self.MinMax(DEPTH)
+        self.NegaMax(DEPTH)
         return nextmove
 
     def MinMax(self, depth):
@@ -97,6 +97,25 @@ class FindBestMove:
                 self.board.pop()
             return minScore
 
+    def NegaMax(self , depth):
+        turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
+        valid_moves = list(self.board.legal_moves)
+        random.shuffle(valid_moves)
+        global nextmove
+        if depth == 0:
+            return turn_multiplier * self.evaluate_board()
+
+        maxScore = -CHECKMATE
+        for move in valid_moves:
+            self.board.push(move)
+            score = -self.MinMax(depth - 1)
+            if score > maxScore:
+                maxScore = score
+                if depth == DEPTH:
+                    nextmove = move
+            self.board.pop()
+        return maxScore
+
     def scoreBoard(self):
         if self.board.is_checkmate():
             if self.board.turn == chess.WHITE:
@@ -115,7 +134,7 @@ class FindBestMove:
 
     def uci(self):
         print("id name FindBestMove")
-        print("id author YourName")
+        print("id author Lakindu")
         print("uciok")
 
     def isready(self):

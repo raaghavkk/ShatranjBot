@@ -22,9 +22,10 @@ valid_moves = list(board.legal_moves)
 
 # Print the type of the first legal move
 print(type(valid_moves[0]))
-
+print(valid_moves)
 # Push the first valid move
 board.push(valid_moves[0])
+
 
 # Print the board after the move
 print(board)
@@ -51,3 +52,7 @@ test_instance = test()
 
 # Evaluate the board score
 print(test_instance.evaluate_board())
+
+turn = board.turn == chess.WHITE
+print(turn)
+
