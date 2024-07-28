@@ -2,6 +2,7 @@ import chess
 import sys
 import random
 from piece_tables import piece_position_score
+from zobrist_hashing import compute_zobrist_hash
 
 CHECKMATE = 1000
 STALEMATE = 0
@@ -31,7 +32,7 @@ class FindBestMove:
     def alphabetaNegaMax(self, validmoves, depth, alpha, beta):
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
 
-        board_hash = self.board.zobrist_hash(self.board)
+        board_hash = compute_zobrist_hash(self.board)
 
         if board_hash in self.transposition_table:
             entry = self.transposition_table[board_hash]
@@ -40,7 +41,7 @@ class FindBestMove:
 
         if depth == 0:
             return turn_multiplier * self.scoreBoard()
-        # move ordering around here.
+
         maxScore = -CHECKMATE
         for move in validmoves:
             self.board.push(move)
@@ -55,31 +56,31 @@ class FindBestMove:
                 alpha = maxScore
             if alpha >= beta:
                 break
-        self.transposition_table[board_hash] = {'value' : maxScore, 'depth' : depth}
+
+        self.transposition_table[board_hash] = {'value': maxScore, 'depth': depth}
         return maxScore
 
     def scoreBoard(self):
         if self.board.is_checkmate():
             if self.board.turn == chess.WHITE:
-                return -CHECKMATE  #Black wins
+                return -CHECKMATE  # Black wins
             else:
-                return CHECKMATE  #White wins
+                return CHECKMATE  # White wins
         elif self.board.is_stalemate():
             return STALEMATE
 
-        else:
-            score = 0
-            for square in chess.SQUARES:
-                piece = self.board.piece_at(square)
-                if piece:
-                    piece_value = piece_score.get(piece.piece_type, 0)
-                    squaren = square if piece.color == chess.WHITE else chess.square_mirror(square)
-                    piece_position_value = piece_position_score.get(piece.piece_type, 0)[squaren]
-                    if piece.color == chess.WHITE:
-                        score += piece_value + piece_position_value
-                    else:
-                        score -= piece_value + piece_position_value
-            return score
+        score = 0
+        for square in chess.SQUARES:
+            piece = self.board.piece_at(square)
+            if piece:
+                piece_value = piece_score.get(piece.piece_type, 0)
+                squaren = square if piece.color == chess.WHITE else chess.square_mirror(square)
+                piece_position_value = piece_position_score.get(piece.piece_type, 0)[squaren]
+                if piece.color == chess.WHITE:
+                    score += piece_value + piece_position_value
+                else:
+                    score -= piece_value + piece_position_value
+        return score
 
     def uci(self):
         print("id name FindBestMove")
