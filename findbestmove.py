@@ -53,4 +53,79 @@ class FindBestMove:
             if self.board.turn == chess.WHITE:
                 return -CHECKMATE  #Black wins
             else:
-                return CHECKMATE  #White
+                return CHECKMATE  #White wins
+        elif self.board.is_stalemate():
+            return STALEMATE
+
+        else:
+            score = 0
+            for square in chess.SQUARES:
+                piece = self.board.piece_at(square)
+                if piece:
+                    piece_value = piece_score.get(piece.piece_type, 0)
+                    squaren = square if piece.color == chess.WHITE else chess.square_mirror(square)
+                    piece_position_value = piece_position_score.get(piece.piece_type, 0)[squaren]
+                    if piece.color == chess.WHITE:
+                        score += piece_value + piece_position_value
+                    else:
+                        score -= piece_value + piece_position_value
+            return score
+
+    def uci(self):
+        print("id name FindBestMove")
+        print("id author Lakindu")
+        print("uciok")
+
+    def isready(self):
+        print("readyok")
+
+    def ucinewgame(self):
+        self.board.reset()
+
+    def position(self, command):
+        if "startpos" in command:
+            self.board.reset()
+            moves = command.split(" moves ")[1] if " moves " in command else ""
+        else:
+            fen = command.split("position fen ")[1].split(" moves ")[0]
+            moves = command.split(" moves ")[1] if " moves " in command else ""
+            self.board.set_fen(fen)
+        for move in moves.split():
+            self.board.push(chess.Move.from_uci(move))
+
+    def go(self):
+        best_move = self.findbestmove()
+        if best_move:
+            print(f"bestmove {best_move}")
+
+    def stop(self):
+        pass
+
+    def quit(self):
+        sys.exit()
+
+    def process_command(self, command):
+        if command == "uci":
+            self.uci()
+        elif command == "isready":
+            self.isready()
+        elif command == "ucinewgame":
+            self.ucinewgame()
+        elif command.startswith("position"):
+            self.position(command)
+        elif command.startswith("go"):
+            self.go()
+        elif command == "stop":
+            self.stop()
+        elif command == "quit":
+            self.quit()
+
+
+if __name__ == "__main__":
+    engine = FindBestMove()
+    while True:
+        try:
+            command = input().strip()
+            engine.process_command(command)
+        except (EOFError, KeyboardInterrupt):
+            break
