@@ -86,6 +86,7 @@ class FindBestMove:
     def __init__(self):
         self.board = chess.Board()
         self.nextmove = None
+        self.transposition_table = {}
 
     def findbestmove(self):
         self.nextmove = None
@@ -96,6 +97,14 @@ class FindBestMove:
 
     def alphabetaNegaMax(self, validmoves, depth, alpha, beta):
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
+
+        board_hash = self.board.zobrist_hash(self.board)
+
+        if board_hash in self.transposition_table:
+            entry = self.transposition_table[board_hash]
+            if entry['depth'] >= depth:
+                return entry['value']
+
         if depth == 0:
             return turn_multiplier * self.scoreBoard()
         # move ordering around here.
@@ -113,6 +122,7 @@ class FindBestMove:
                 alpha = maxScore
             if alpha >= beta:
                 break
+        self.transposition_table[board_hash] = {'value' : maxScore, 'depth' : depth}
         return maxScore
 
     def scoreBoard(self):

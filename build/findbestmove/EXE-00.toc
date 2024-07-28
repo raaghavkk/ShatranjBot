@@ -106,7 +106,7 @@
  [],
  False,
  False,
- 1722165829,
+ 1722183289,
  [('run.exe',
    'C:\\Users\\LAKINDU\\PycharmProjects\\ShatranjBot\\.venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',
    'EXECUTABLE')],
