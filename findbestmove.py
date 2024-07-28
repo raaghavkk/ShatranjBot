@@ -25,9 +25,8 @@ class FindBestMove:
     def __init__(self):
         self.board = chess.Board()
         self.nextmove = None
-        self.transposition_table = self.load_latest_transposition_table()
+        self.transposition_table = self.load_all_transposition_tables()
 
-#will save previous moves in a transposition table
     def save_transposition_table(self):
         if not os.path.exists(TABLES_DIR):
             os.makedirs(TABLES_DIR)
@@ -36,17 +35,20 @@ class FindBestMove:
         with open(file_path, 'wb') as f:
             pickle.dump(self.transposition_table, f)
 
-    def load_latest_transposition_table(self):
+    def load_all_transposition_tables(self):
+        combined_table = {}
         if not os.path.exists(TABLES_DIR):
-            return {}
+            return combined_table
 
         files = [f for f in os.listdir(TABLES_DIR) if f.startswith('transposition_table') and f.endswith('.pkl')]
-        if not files:
-            return {}
-
-        latest_file = max(files, key=lambda f: os.path.getctime(os.path.join(TABLES_DIR, f)))
-        with open(os.path.join(TABLES_DIR, latest_file), 'rb') as f:
-            return pickle.load(f)
+        for file in files:
+            file_path = os.path.join(TABLES_DIR, file)
+            with open(file_path, 'rb') as f:
+                table = pickle.load(f)
+                for key, value in table.items():
+                    if key not in combined_table or table[key]['depth'] > combined_table[key]['depth']:
+                        combined_table[key] = value
+        return combined_table
 
     def findbestmove(self):
         self.nextmove = None
