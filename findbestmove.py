@@ -12,7 +12,7 @@ piece_score = {
     chess.QUEEN: 9,
     chess.KING: 0
 }
-DEPTH = 4
+DEPTH = 5
 
 class FindBestMove:
     def __init__(self):
