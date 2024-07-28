@@ -1,6 +1,9 @@
 import chess
 import sys
 import random
+import os
+import pickle
+from datetime import datetime
 from piece_tables import piece_position_score
 from zobrist_hashing import compute_zobrist_hash
 
@@ -15,12 +18,35 @@ piece_score = {
     chess.KING: 0
 }
 DEPTH = 5
+TABLES_DIR = 'transposition_tables'
+
 
 class FindBestMove:
     def __init__(self):
         self.board = chess.Board()
         self.nextmove = None
-        self.transposition_table = {}
+        self.transposition_table = self.load_latest_transposition_table()
+
+#will save previous moves in a transposition table
+    def save_transposition_table(self):
+        if not os.path.exists(TABLES_DIR):
+            os.makedirs(TABLES_DIR)
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        file_path = os.path.join(TABLES_DIR, f'transposition_table_{timestamp}.pkl')
+        with open(file_path, 'wb') as f:
+            pickle.dump(self.transposition_table, f)
+
+    def load_latest_transposition_table(self):
+        if not os.path.exists(TABLES_DIR):
+            return {}
+
+        files = [f for f in os.listdir(TABLES_DIR) if f.startswith('transposition_table') and f.endswith('.pkl')]
+        if not files:
+            return {}
+
+        latest_file = max(files, key=lambda f: os.path.getctime(os.path.join(TABLES_DIR, f)))
+        with open(os.path.join(TABLES_DIR, latest_file), 'rb') as f:
+            return pickle.load(f)
 
     def findbestmove(self):
         self.nextmove = None
@@ -113,6 +139,7 @@ class FindBestMove:
         pass
 
     def quit(self):
+        self.save_transposition_table()
         sys.exit()
 
     def process_command(self, command):
@@ -139,4 +166,5 @@ if __name__ == "__main__":
             command = input().strip()
             engine.process_command(command)
         except (EOFError, KeyboardInterrupt):
+            engine.quit()
             break
