@@ -63,7 +63,9 @@ class FindBestMove:
     def findbestmoveminmax(self):
         global nextmove
         nextmove = None
-        self.alphabetaNegaMax(DEPTH, -CHECKMATE, CHECKMATE)
+        valid_moves = list(self.board.legal_moves)
+        random.shuffle(valid_moves)
+        self.alphabetaNegaMax(valid_moves, DEPTH, -CHECKMATE, CHECKMATE)
         return nextmove
 
     def MinMax(self, depth):
@@ -116,18 +118,17 @@ class FindBestMove:
             self.board.pop()
         return maxScore
 
-    def alphabetaNegaMax(self, depth , alpha , beta):
+    def alphabetaNegaMax(self, validmoves, depth , alpha , beta):
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
-        valid_moves = list(self.board.legal_moves)
-        random.shuffle(valid_moves)
         global nextmove
         if depth == 0:
             return turn_multiplier * self.scoreBoard()
 # move ordering around here.
         maxScore = -CHECKMATE
-        for move in valid_moves:
+        for move in validmoves:
             self.board.push(move)
-            score = -self.alphabetaNegaMax(depth - 1, -beta, -alpha)
+            nextmoves = list(self.board.legal_moves)
+            score = -self.alphabetaNegaMax(nextmoves, depth - 1, -beta, -alpha)
             if score > maxScore:
                 maxScore = score
                 if depth == DEPTH:
