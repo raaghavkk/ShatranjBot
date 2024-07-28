@@ -118,7 +118,7 @@ class FindBestMove:
             self.board.pop()
         return maxScore
 
-    def alphabetaNegaMax(self, validmoves, depth , alpha , beta):
+    def alphabetaNegaMax(self, validmoves, depth, alpha, beta):
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
         global nextmove
         if depth == 0:
@@ -149,12 +149,14 @@ class FindBestMove:
         elif self.board.is_stalemate():
             return STALEMATE
 
-        score = 0
-        for square in chess.SQUARES:
-            piece = self.board.piece_at(square)
-            if piece:
-                piece_value = piece_score.get(piece.piece_type, 0)
-                score += piece_value if piece.color == chess.WHITE else -piece_value
+        else:
+            score = 0
+            for square in chess.SQUARES:
+                piece = self.board.piece_at(square)
+                if piece:
+                    piece_value = piece_score.get(piece.piece_type, 0)
+                    score += piece_value if piece.color == chess.WHITE else -piece_value
+            return score
 
     def uci(self):
         print("id name FindBestMove")
