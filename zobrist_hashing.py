@@ -5,7 +5,7 @@ import random
 piece_types = [chess.PAWN, chess.KNIGHT, chess.BISHOP, chess.ROOK, chess.QUEEN, chess.KING]
 zobrist_table = {
     piece_type: [[random.getrandbits(64) for _ in range(64)] for _ in range(2)]
-    for piece_type in piece_typesn
+    for piece_type in piece_types
 }
 zobrist_side = random.getrandbits(64)
 
