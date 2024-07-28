@@ -5,18 +5,87 @@ import random
 CHECKMATE = 1000
 STALEMATE = 0
 piece_score = {
-    chess.PAWN: 1,
-    chess.KNIGHT: 3,
-    chess.BISHOP: 3,
-    chess.ROOK: 5,
-    chess.QUEEN: 9,
+    chess.PAWN: 100,
+    chess.KNIGHT: 300,
+    chess.BISHOP: 300,
+    chess.ROOK: 500,
+    chess.QUEEN: 900,
     chess.KING: 0
 }
 DEPTH = 5
 
+pawn_table = [
+      0,   0,   0,   0,   0,   0,   0,   0,
+      5,  10,  10, -20, -20,  10,  10,   5,
+      5,  -5, -10,   0,   0, -10,  -5,   5,
+      0,   0,   0,  20,  20,   0,   0,   0,
+      5,   5,  10,  25,  25,  10,   5,   5,
+     10,  10,  20,  30,  30,  20,  10,  10,
+     50,  50,  50,  50,  50,  50,  50,  50,
+    100, 100, 100, 100, 100, 100, 100, 100
+]
+
+knight_table = [
+    -50, -40, -30, -30, -30, -30, -40, -50,
+    -40, -20,   0,   0,   0,   0, -20, -40,
+    -30,   0,  10,  15,  15,  10,   0, -30,
+    -30,   5,  15,  20,  20,  15,   5, -30,
+    -30,   0,  15,  20,  20,  15,   0, -30,
+    -30,   5,  10,  15,  15,  10,   5, -30,
+    -40, -20,   0,   5,   5,   0, -20, -40,
+    -50, -40, -30, -30, -30, -30, -40, -50
+]
+bishop_table = [
+    -20, -10, -10, -10, -10, -10, -10, -20,
+    -10,   0,   0,   0,   0,   0,   0, -10,
+    -10,   0,   5,  10,  10,   5,   0, -10,
+    -10,   5,   5,  10,  10,   5,   5, -10,
+    -10,   0,  10,  10,  10,  10,   0, -10,
+    -10,  10,  10,  10,  10,  10,  10, -10,
+    -10,   5,   0,   0,   0,   0,   5, -10,
+    -20, -10, -10, -10, -10, -10, -10, -20
+]
+rook_table = [
+     0,   0,   0,   0,   0,   0,   0,   0,
+     5,  10,  10,  10,  10,  10,  10,   5,
+    -5,   0,   0,   0,   0,   0,   0,  -5,
+    -5,   0,   0,   0,   0,   0,   0,  -5,
+    -5,   0,   0,   0,   0,   0,   0,  -5,
+    -5,   0,   0,   0,   0,   0,   0,  -5,
+    -5,   0,   0,   0,   0,   0,   0,  -5,
+     0,   0,   0,   5,   5,   0,   0,   0
+]
+queen_table = [
+    -20, -10, -10,  -5,  -5, -10, -10, -20,
+    -10,   0,   0,   0,   0,   0,   0, -10,
+    -10,   0,   5,   5,   5,   5,   0, -10,
+     -5,   0,   5,   5,   5,   5,   0,  -5,
+      0,   0,   5,   5,   5,   5,   0,  -5,
+    -10,   5,   5,   5,   5,   5,   0, -10,
+    -10,   0,   5,   0,   0,   0,   0, -10,
+    -20, -10, -10,  -5,  -5, -10, -10, -20
+]
+king_table = [
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -30, -40, -40, -50, -50, -40, -40, -30,
+    -20, -30, -30, -40, -40, -30, -30, -20,
+    -10, -20, -20, -20, -20, -20, -20, -10,
+     20,  20,   0,   0,   0,   0,  20,  20,
+     20,  30,  10,   0,   0,  10,  30,  20
+]
+piece_position_score = {chess.PAWN: pawn_table,
+                        chess.KNIGHT: knight_table,
+                        chess.BISHOP:bishop_table,
+                        chess.ROOK: rook_table,
+                        chess.QUEEN: queen_table,
+                        chess.KING: king_table
+                        }
 class FindBestMove:
     def __init__(self):
         self.board = chess.Board()
+        self.nextmove = None
 
     def evaluate_board(self):
         score = 0
@@ -61,17 +130,16 @@ class FindBestMove:
         return best_player_move
 
     def findbestmoveminmax(self):
-        global nextmove
-        nextmove = None
+        self.nextmove = None
         valid_moves = list(self.board.legal_moves)
         random.shuffle(valid_moves)
         self.alphabetaNegaMax(valid_moves, DEPTH, -CHECKMATE, CHECKMATE)
-        return nextmove
+        return self.nextmove
 
     def MinMax(self, depth):
         turn = self.board.turn == chess.WHITE
         valid_moves = list(self.board.legal_moves)
-        global nextmove
+        self.nextmove
         if depth == 0:
             return self.evaluate_board()
 
@@ -79,11 +147,11 @@ class FindBestMove:
             maxScore = -CHECKMATE
             for move in valid_moves:
                 self.board.push(move)
-                score = self.MinMax(depth-1)
+                score = self.MinMax(depth - 1)
                 if score > maxScore:
                     maxScore = score
                     if depth == DEPTH:
-                        nextmove = move
+                        self.nextmove = move
                 self.board.pop()
             return maxScore
 
@@ -91,11 +159,11 @@ class FindBestMove:
             minScore = CHECKMATE
             for move in valid_moves:
                 self.board.push(move)
-                score = self.MinMax(depth-1)
+                score = self.MinMax(depth - 1)
                 if score < minScore:
                     minScore = score
                     if depth == DEPTH:
-                        nextmove = move
+                        self.nextmove = move
                 self.board.pop()
             return minScore
 
@@ -103,7 +171,7 @@ class FindBestMove:
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
         valid_moves = list(self.board.legal_moves)
         random.shuffle(valid_moves)
-        global nextmove
+        self.nextmove
         if depth == 0:
             return turn_multiplier * self.evaluate_board()
 
@@ -114,16 +182,15 @@ class FindBestMove:
             if score > maxScore:
                 maxScore = score
                 if depth == DEPTH:
-                    nextmove = move
+                    self.nextmove = move
             self.board.pop()
         return maxScore
 
     def alphabetaNegaMax(self, validmoves, depth, alpha, beta):
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
-        global nextmove
         if depth == 0:
             return turn_multiplier * self.scoreBoard()
-# move ordering around here.
+        # move ordering around here.
         maxScore = -CHECKMATE
         for move in validmoves:
             self.board.push(move)
@@ -132,7 +199,7 @@ class FindBestMove:
             if score > maxScore:
                 maxScore = score
                 if depth == DEPTH:
-                    nextmove = move
+                    self.nextmove = move
             self.board.pop()
             if maxScore > alpha:
                 alpha = maxScore
@@ -143,9 +210,9 @@ class FindBestMove:
     def scoreBoard(self):
         if self.board.is_checkmate():
             if self.board.turn == chess.WHITE:
-                return -CHECKMATE #Black wins
+                return -CHECKMATE  #Black wins
             else:
-                return CHECKMATE #White wins
+                return CHECKMATE  #White wins
         elif self.board.is_stalemate():
             return STALEMATE
 
@@ -155,7 +222,12 @@ class FindBestMove:
                 piece = self.board.piece_at(square)
                 if piece:
                     piece_value = piece_score.get(piece.piece_type, 0)
-                    score += piece_value if piece.color == chess.WHITE else -piece_value
+                    squaren = square if piece.color == chess.WHITE else chess.square_mirror(square)
+                    piece_position_value = piece_position_score.get(piece.piece_type, 0)[squaren]
+                    if piece.color == chess.WHITE:
+                        score += piece_value + piece_position_value
+                    else:
+                        score -= piece_value + piece_position_value
             return score
 
     def uci(self):

@@ -56,3 +56,4 @@ print(test_instance.evaluate_board())
 turn = board.turn == chess.WHITE
 print(turn)
 
+print(board.piece_at(chess.SQUARES[23]))
