@@ -111,8 +111,8 @@ class FindBestMove:
         return score
 
     def uci(self):
-        print("id name FindBestMove")
-        print("id author Lakindu")
+        print("id name Mahoraga")
+        print("id author Lakindu & Raaghav")
         print("uciok")
 
     def isready(self):
