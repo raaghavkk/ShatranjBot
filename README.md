@@ -5,7 +5,7 @@ ShatranjBot, uses advanced algorithms and techniques to find the optimal moves i
 
 
 
-![Logo](https://i.ibb.co/bXF6468/SHATRANJ-BOT.png)
+![Logo](https://i.ibb.co/YyZjJ9J/SHATRANJ-BOT-1.png)
 
 
 ## Features
