@@ -23,7 +23,7 @@ piece_score = {
 }
 
 # This variable determine how far will the algorithm will check from the current position.
-DEPTH = 5
+DEPTH = 4
 
 # Inside this directory transposition table files.
 TABLES_DIR = 'transposition_tables'
