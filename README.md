@@ -39,7 +39,7 @@ ShatranjBot, uses advanced algorithms and techniques to find the optimal moves i
 
 ## Play, Adapt, Conquer
 
-![Inspired from Mahoraga](https://i.ibb.co/zPKGD9c/bg-f8f8f8-flat-750x-075-f-pad-750x1000-f8f8f8.png)
+![Inspired from Mahoraga](https://i.ibb.co/zXtxCB9/untit1ed.png)
 
 
 ## UCI Commands
