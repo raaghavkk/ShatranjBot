@@ -17,7 +17,7 @@ piece_score = {
     chess.QUEEN: 90,
     chess.KING: 0
 }
-DEPTH = 5
+DEPTH = 10
 TABLES_DIR = 'transposition_tables'
 
 
