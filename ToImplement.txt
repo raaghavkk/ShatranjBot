@@ -1,5 +1,0 @@
-Make king less stupid []
-check for first three moves []
-The king only moves when it is checked. Otherwise it will not move
-I tried to implement a new code I got but couldn't get it to work because it won't get updated.
-Check the GPT branch and try to implement it on the GUI arena because i don't think any changes we do affect that executable.
