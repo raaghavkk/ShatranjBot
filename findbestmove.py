@@ -55,7 +55,10 @@ class FindBestMove:
         valid_moves = list(self.board.legal_moves)
         random.shuffle(valid_moves)
         self.alphabetaNegaMax(valid_moves, DEPTH, -CHECKMATE, CHECKMATE)
-        return self.nextmove
+        if self.nextmove == None:
+            return random.choice(valid_moves)
+        else:
+            return self.nextmove
 
     def alphabetaNegaMax(self, validmoves, depth, alpha, beta):
         turn_multiplier = 1 if self.board.turn == chess.WHITE else -1
