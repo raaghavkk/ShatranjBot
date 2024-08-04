@@ -23,16 +23,16 @@ ShatranjBot, uses advanced algorithms and techniques to find the optimal moves i
   git clone https://github.com/raaghavkk/ShatranjBot
 ```
 
-#### Install dependencies :
+#### Install dependencies (only one) :
 
 ```bash
-  pip install -r requirements.txt
+  pip install chess
 ```
 
 #### Compile to run with Arena GUI :
 
 ```bash
-  pyinstaller --onefile findbestmove.py 
+  pyinstaller --onefile ShatranjBot.py 
 ```
 
 ##### this will create a findbestmove.exe inside the dist directory which can be opened by the Arena GUI
@@ -87,8 +87,4 @@ ShatranjBot, uses advanced algorithms and techniques to find the optimal moves i
  - [Python Chess README](https://python-chess.readthedocs.io/en/latest/)
  - [Playlist by Eddie Sharick](https://www.youtube.com/playlist?list=PLBwF487qi8MGU81nDGaeNE1EnNEPYWKY_)
 
-
-## Optimizations
-
-Need to make a lot of Optimizations :0
 
